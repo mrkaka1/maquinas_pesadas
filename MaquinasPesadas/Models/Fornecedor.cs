@@ -7,7 +7,7 @@ namespace MaquinasPesadas.Models
     internal class Fornecedor
     {
         private int _fornecedorID;
-        public int ForncedorID
+        public int FornecedorID
         {
             get { return _fornecedorID; }
             set
@@ -76,9 +76,15 @@ namespace MaquinasPesadas.Models
         public string UF
         {
             get { return _uf; }
-            set { _uf = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    _uf = null;
+                else if (value.Trim().Length == 2)
+                    _uf = value.Trim().ToUpper();
+                else
+                    throw new Exception("A UF deve ter 2 letras!");
+            }
         }
-
-
     }
 }

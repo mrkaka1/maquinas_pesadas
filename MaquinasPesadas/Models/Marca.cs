@@ -34,6 +34,7 @@ namespace MaquinasPesadas.Models
         }
 
         private string _paisOrigem;
+
         public string PaisOrigem
         {
             get { return _paisOrigem; }
