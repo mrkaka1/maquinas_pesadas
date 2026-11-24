@@ -11,9 +11,7 @@ namespace MaquinasPesadas
         {
             try
             {
-                var vendas = new MaquinasPesadas.DAO.VendaDAO().GetAll();
-                var os = new MaquinasPesadas.DAO.OrdemServicoDAO().GetAll();
-                MessageBox.Show($"Vendas: {vendas.Count}\nOS: {os.Count}");
+                new MaquinasPesadas.Forms.FormMarca().ShowDialog();
             }
             catch (Exception ex)
             {
