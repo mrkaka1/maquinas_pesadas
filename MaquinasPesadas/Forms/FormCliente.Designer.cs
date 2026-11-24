@@ -1,0 +1,236 @@
+namespace MaquinasPesadas.Forms
+{
+    partial class FormCliente
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        private void InitializeComponent()
+        {
+            label1 = new Label();
+            label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            label7 = new Label();
+            label8 = new Label();
+            label9 = new Label();
+            txt_id = new TextBox();
+            txt_nome = new TextBox();
+            txt_cpfCnpj = new TextBox();
+            cmb_tipoPessoa = new ComboBox();
+            txt_telefone = new TextBox();
+            txt_email = new TextBox();
+            txt_cidade = new TextBox();
+            txt_uf = new TextBox();
+            dtp_dataCadastro = new DateTimePicker();
+            btn_novo = new Button();
+            btn_salvar = new Button();
+            btn_excluir = new Button();
+            btn_fechar = new Button();
+            dgv_clientes = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgv_clientes).BeginInit();
+            SuspendLayout();
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 15);
+            label1.Name = "label1";
+            label1.Size = new Size(42, 15);
+            label1.TabIndex = 0;
+            label1.Text = "Código";
+            label2.AutoSize = true;
+            label2.Location = new Point(100, 15);
+            label2.Name = "label2";
+            label2.Size = new Size(28, 15);
+            label2.TabIndex = 1;
+            label2.Text = "Nome";
+            label3.AutoSize = true;
+            label3.Location = new Point(420, 15);
+            label3.Name = "label3";
+            label3.Size = new Size(56, 15);
+            label3.TabIndex = 2;
+            label3.Text = "CPF/CNPJ";
+            label4.AutoSize = true;
+            label4.Location = new Point(12, 65);
+            label4.Name = "label4";
+            label4.Size = new Size(28, 15);
+            label4.TabIndex = 3;
+            label4.Text = "Tipo";
+            label5.AutoSize = true;
+            label5.Location = new Point(100, 65);
+            label5.Name = "label5";
+            label5.Size = new Size(56, 15);
+            label5.TabIndex = 4;
+            label5.Text = "Telefone";
+            label6.AutoSize = true;
+            label6.Location = new Point(255, 65);
+            label6.Name = "label6";
+            label6.Size = new Size(42, 15);
+            label6.TabIndex = 5;
+            label6.Text = "E-mail";
+            label7.AutoSize = true;
+            label7.Location = new Point(12, 115);
+            label7.Name = "label7";
+            label7.Size = new Size(42, 15);
+            label7.TabIndex = 6;
+            label7.Text = "Cidade";
+            label8.AutoSize = true;
+            label8.Location = new Point(225, 115);
+            label8.Name = "label8";
+            label8.Size = new Size(14, 15);
+            label8.TabIndex = 7;
+            label8.Text = "UF";
+            label9.AutoSize = true;
+            label9.Location = new Point(285, 115);
+            label9.Name = "label9";
+            label9.Size = new Size(112, 15);
+            label9.TabIndex = 8;
+            label9.Text = "Data de cadastro";
+            txt_id.Location = new Point(12, 35);
+            txt_id.Name = "txt_id";
+            txt_id.ReadOnly = true;
+            txt_id.Size = new Size(70, 23);
+            txt_id.TabIndex = 9;
+            txt_nome.Location = new Point(100, 35);
+            txt_nome.Name = "txt_nome";
+            txt_nome.Size = new Size(300, 23);
+            txt_nome.TabIndex = 10;
+            txt_cpfCnpj.Location = new Point(420, 35);
+            txt_cpfCnpj.Name = "txt_cpfCnpj";
+            txt_cpfCnpj.Size = new Size(165, 23);
+            txt_cpfCnpj.TabIndex = 11;
+            cmb_tipoPessoa.Location = new Point(12, 85);
+            cmb_tipoPessoa.Name = "cmb_tipoPessoa";
+            cmb_tipoPessoa.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmb_tipoPessoa.FormattingEnabled = true;
+            cmb_tipoPessoa.Size = new Size(70, 23);
+            cmb_tipoPessoa.TabIndex = 12;
+            txt_telefone.Location = new Point(100, 85);
+            txt_telefone.Name = "txt_telefone";
+            txt_telefone.Size = new Size(140, 23);
+            txt_telefone.TabIndex = 13;
+            txt_email.Location = new Point(255, 85);
+            txt_email.Name = "txt_email";
+            txt_email.Size = new Size(330, 23);
+            txt_email.TabIndex = 14;
+            txt_cidade.Location = new Point(12, 135);
+            txt_cidade.Name = "txt_cidade";
+            txt_cidade.Size = new Size(200, 23);
+            txt_cidade.TabIndex = 15;
+            txt_uf.Location = new Point(225, 135);
+            txt_uf.Name = "txt_uf";
+            txt_uf.Size = new Size(45, 23);
+            txt_uf.TabIndex = 16;
+            dtp_dataCadastro.Location = new Point(285, 135);
+            dtp_dataCadastro.Name = "dtp_dataCadastro";
+            dtp_dataCadastro.Format = DateTimePickerFormat.Short;
+            dtp_dataCadastro.Size = new Size(120, 23);
+            dtp_dataCadastro.TabIndex = 17;
+            btn_novo.Location = new Point(12, 170);
+            btn_novo.Name = "btn_novo";
+            btn_novo.Size = new Size(75, 27);
+            btn_novo.TabIndex = 18;
+            btn_novo.Text = "Novo";
+            btn_novo.UseVisualStyleBackColor = true;
+            btn_novo.Click += btn_novo_Click;
+            btn_salvar.Location = new Point(95, 170);
+            btn_salvar.Name = "btn_salvar";
+            btn_salvar.Size = new Size(75, 27);
+            btn_salvar.TabIndex = 19;
+            btn_salvar.Text = "Salvar";
+            btn_salvar.UseVisualStyleBackColor = true;
+            btn_salvar.Click += btn_salvar_Click;
+            btn_excluir.Location = new Point(178, 170);
+            btn_excluir.Name = "btn_excluir";
+            btn_excluir.Size = new Size(75, 27);
+            btn_excluir.TabIndex = 20;
+            btn_excluir.Text = "Excluir";
+            btn_excluir.UseVisualStyleBackColor = true;
+            btn_excluir.Click += btn_excluir_Click;
+            btn_fechar.Location = new Point(510, 170);
+            btn_fechar.Name = "btn_fechar";
+            btn_fechar.Size = new Size(75, 27);
+            btn_fechar.TabIndex = 21;
+            btn_fechar.Text = "Fechar";
+            btn_fechar.UseVisualStyleBackColor = true;
+            btn_fechar.Click += btn_fechar_Click;
+            dgv_clientes.AllowUserToAddRows = false;
+            dgv_clientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv_clientes.Location = new Point(12, 210);
+            dgv_clientes.Name = "dgv_clientes";
+            dgv_clientes.ReadOnly = true;
+            dgv_clientes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv_clientes.Size = new Size(573, 195);
+            dgv_clientes.TabIndex = 22;
+            dgv_clientes.CellClick += dgv_clientes_CellClick;
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(600, 420);
+            Controls.Add(dgv_clientes);
+            Controls.Add(btn_fechar);
+            Controls.Add(btn_excluir);
+            Controls.Add(btn_salvar);
+            Controls.Add(btn_novo);
+            Controls.Add(dtp_dataCadastro);
+            Controls.Add(txt_uf);
+            Controls.Add(txt_cidade);
+            Controls.Add(txt_email);
+            Controls.Add(txt_telefone);
+            Controls.Add(cmb_tipoPessoa);
+            Controls.Add(txt_cpfCnpj);
+            Controls.Add(txt_nome);
+            Controls.Add(txt_id);
+            Controls.Add(label9);
+            Controls.Add(label8);
+            Controls.Add(label7);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(label1);
+            Name = "FormCliente";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Cadastro de Clientes";
+            ((System.ComponentModel.ISupportInitialize)dgv_clientes).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
+        }
+
+        #endregion
+
+        private Label label1;
+        private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private Label label7;
+        private Label label8;
+        private Label label9;
+        private TextBox txt_id;
+        private TextBox txt_nome;
+        private TextBox txt_cpfCnpj;
+        private ComboBox cmb_tipoPessoa;
+        private TextBox txt_telefone;
+        private TextBox txt_email;
+        private TextBox txt_cidade;
+        private TextBox txt_uf;
+        private DateTimePicker dtp_dataCadastro;
+        private Button btn_novo;
+        private Button btn_salvar;
+        private Button btn_excluir;
+        private Button btn_fechar;
+        private DataGridView dgv_clientes;
+    }
+}
