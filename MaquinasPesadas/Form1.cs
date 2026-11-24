@@ -11,7 +11,11 @@ namespace MaquinasPesadas
         {
             try
             {
-                new MaquinasPesadas.Forms.FormMarca().ShowDialog();
+                //new MaquinasPesadas.Forms.FormModelo().ShowDialog();
+
+                //new MaquinasPesadas.Forms.FormPeca().ShowDialog();
+
+                new MaquinasPesadas.Forms.FormMaquina().ShowDialog();
             }
             catch (Exception ex)
             {
