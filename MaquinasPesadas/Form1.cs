@@ -11,10 +11,9 @@ namespace MaquinasPesadas
         {
             try
             {
-                using (var con = MaquinasPesadas.DataBase.Conexao.Conectar())
-                {
-                    MessageBox.Show("Conectado ao banco maquinas_pesadas!");
-                }
+                var vendas = new MaquinasPesadas.DAO.VendaDAO().GetAll();
+                var os = new MaquinasPesadas.DAO.OrdemServicoDAO().GetAll();
+                MessageBox.Show($"Vendas: {vendas.Count}\nOS: {os.Count}");
             }
             catch (Exception ex)
             {

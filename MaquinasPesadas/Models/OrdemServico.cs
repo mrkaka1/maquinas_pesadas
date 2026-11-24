@@ -34,14 +34,14 @@ namespace MaquinasPesadas.Models
             }
         }
 
-        private DateOnly? _dataFechamento;
+        private DateOnly _dataFechamento;
 
-        public DateOnly? DataFechamento
+        public DateOnly DataFechamento
         {
             get { return _dataFechamento; }
             set
             {
-                if (value == null || value >= _dataAbertura)
+                if (value >= _dataAbertura)
                     _dataFechamento = value;
                 else
                     throw new Exception("A data de fechamento não pode ser menor que a data de abertura!");

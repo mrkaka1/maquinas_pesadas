@@ -36,12 +36,31 @@ namespace MaquinasPesadas.DAO
             }
         }
 
+        public void Deletar(int funcionarioID)
+        {
+            try
+            {
+                string sql = "DELETE FROM funcionario WHERE funcionarioID = @funcionarioID;";
+                using (var conexao = Conexao.Conectar())
+                using (var cmd = new MySqlCommand(sql, conexao))
+                {
+                    cmd.Parameters.AddWithValue("@funcionarioID", funcionarioID);
+                    var linhasAfetadas = cmd.ExecuteNonQuery();
+                    if (linhasAfetadas == 0)
+                        throw new Exception("Nenhum registro encontrado com esse ID!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public void Atualizar(Funcionario f)
         {
             try
             {
-                string sql = @"UPDATE funcionario SET matricula = @matricula, nome = @nome, cpf = @cpf, cargo = @cargo,
-                    dataAdmissao = @dataAdmissao, email = @email, ativo = @ativo
+                string sql = @"UPDATE funcionario SET matricula = @matricula, nome = @nome, cpf = @cpf, cargo = @cargo, dataAdmissao = @dataAdmissao, email = @email, ativo = @ativo
                     WHERE funcionarioID = @funcionarioID";
 
                 using (var conexao = Conexao.Conectar())
@@ -58,7 +77,7 @@ namespace MaquinasPesadas.DAO
                     var linhas = cmd.ExecuteNonQuery();
 
                     if (linhas == 0)
-                        throw new Exception("Nenhum funcionário foi atualizado (verifique o ID)!");
+                        throw new Exception("Nenhum registro foi atualizado (verifique o funcionarioID)");
                 }
             }
             catch (Exception ex)
@@ -66,47 +85,36 @@ namespace MaquinasPesadas.DAO
                 throw new Exception(ex.Message);
             }
         }
-
-        public void Deletar(int id)
-        {
-            try
-            {
-                string sql = "DELETE FROM funcionario WHERE funcionarioID = @funcionarioID";
-
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                {
-                    cmd.Parameters.AddWithValue("@funcionarioID", id);
-                    var linhas = cmd.ExecuteNonQuery();
-
-                    if (linhas == 0)
-                        throw new Exception("Nenhum funcionário encontrado com esse ID!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public List<Funcionario> GetAll()
+
         {
-            List<Funcionario> lista = new List<Funcionario>();
+            List<Funcionario> func = new List<Funcionario>();
 
             try
             {
-                string sql = "SELECT * FROM funcionario ORDER BY nome";
+                string sql = @"SELECT * FROM funcionario ORDER BY nome";
 
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using(var conexao = Conexao.Conectar())
+                    using(var comando = new MySqlCommand(sql, conexao))
+                        using(MySqlDataReader dr = comando.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        lista.Add(LerFuncionario(dr));
+                        Funcionario f = new Funcionario()
+                        {
+                            FuncionarioID = Convert.ToInt32(dr["funcionarioID"]),
+                            Matricula = Convert.ToInt32(dr["matricula"]),
+                            Nome = dr["nome"].ToString(),
+                            Cpf = dr["cpf"].ToString(),
+                            Cargo = dr["cargo"].ToString(),
+                            DataAdmissao = DateOnly.FromDateTime(Convert.ToDateTime(dr["dataAdmissao"])),
+                            Email = dr["email"].ToString(),
+                            Ativo = Convert.ToBoolean(dr["ativo"])
+                        };
+                        func.Add(f);
                     }
                 }
-                return lista;
+                return func;
             }
             catch (Exception ex)
             {
@@ -114,44 +122,45 @@ namespace MaquinasPesadas.DAO
             }
         }
 
-        public Funcionario BuscarID(int id)
+        public Funcionario BuscarID(int funcionarioID)
         {
             try
             {
-                string sql = "SELECT * FROM funcionario WHERE funcionarioID = @funcionarioID";
+                string sql = @"SELECT * FROM funcionario WHERE funcionarioID = @funcionarioID";
 
                 using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
+                    using(var cmd =  new MySqlCommand(sql, conexao))
                 {
-                    cmd.Parameters.AddWithValue("@funcionarioID", id);
+                    cmd.Parameters.AddWithValue("@funcionarioID", funcionarioID);
 
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    using(MySqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
-                            return LerFuncionario(dr);
+                        {
+                            Funcionario f = new Funcionario();
+
+                            f.FuncionarioID = Convert.ToInt32(dr["funcionarioID"]);
+                            f.Matricula = Convert.ToInt32(dr["matricula"]);
+                            f.Nome = dr["nome"].ToString();
+                            f.Cpf = dr["cpf"].ToString();
+                            f.Cargo = dr["cargo"].ToString();
+                            f.DataAdmissao = DateOnly.FromDateTime(Convert.ToDateTime(dr["dataAdmissao"]));
+                            f.Email = dr["email"].ToString();
+                            f.Ativo = Convert.ToBoolean(dr["ativo"]);
+
+                            return f;
+                        }
                         else
+                        {
                             throw new Exception("Nenhum funcionário encontrado com esse ID.");
+                        }
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        private Funcionario LerFuncionario(MySqlDataReader dr)
-        {
-            Funcionario f = new Funcionario();
-            f.FuncionarioID = Convert.ToInt32(dr["funcionarioID"]);
-            f.Matricula = Convert.ToInt32(dr["matricula"]);
-            f.Nome = dr["nome"].ToString();
-            f.Cpf = dr["cpf"].ToString();
-            f.Cargo = dr["cargo"].ToString();
-            f.DataAdmissao = DateOnly.FromDateTime(Convert.ToDateTime(dr["dataAdmissao"]));
-            f.Email = dr["email"].ToString();
-            f.Ativo = Convert.ToBoolean(dr["ativo"]);
-            return f;
         }
     }
 }

@@ -7,6 +7,7 @@ namespace MaquinasPesadas.Models
     internal class Maquina
     {
         private int _maquinaID;
+
         public int MaquinaID
         {
             get { return _maquinaID; }
@@ -20,6 +21,7 @@ namespace MaquinasPesadas.Models
         }
 
         private string _numeroSerie;
+
         public string NumeroSerie
         {
             get { return _numeroSerie; }
@@ -33,6 +35,7 @@ namespace MaquinasPesadas.Models
         }
 
         private int _anoFabricacao;
+
         public int AnoFabricacao
         {
             get { return _anoFabricacao; }
@@ -46,6 +49,7 @@ namespace MaquinasPesadas.Models
         }
 
         private int _horimetro;
+
         public int Horimetro
         {
             get { return _horimetro; }
@@ -58,8 +62,8 @@ namespace MaquinasPesadas.Models
             }
         }
 
-        // FK_clienteID (dono da máquina)
         private Cliente _cliente;
+
         public Cliente Cliente
         {
             get { return _cliente; }
@@ -72,8 +76,8 @@ namespace MaquinasPesadas.Models
             }
         }
 
-        // FK_modeloID
         private Modelo _modelo;
+
         public Modelo Modelo
         {
             get { return _modelo; }

@@ -31,6 +31,26 @@ namespace MaquinasPesadas.DAO
             }
         }
 
+        public void Deletar(int marcaID)
+        {
+            try
+            {
+                string sql = "DELETE FROM marca WHERE marcaID = @marcaID;";
+                using (var conexao = Conexao.Conectar())
+                using (var cmd = new MySqlCommand(sql, conexao))
+                {
+                    cmd.Parameters.AddWithValue("@marcaID", marcaID);
+                    var linhasAfetadas = cmd.ExecuteNonQuery();
+                    if (linhasAfetadas == 0)
+                        throw new Exception("Nenhum registro encontrado com esse ID!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public void Atualizar(Marca m)
         {
             try
@@ -47,7 +67,7 @@ namespace MaquinasPesadas.DAO
                     var linhas = cmd.ExecuteNonQuery();
 
                     if (linhas == 0)
-                        throw new Exception("Nenhuma marca foi atualizada (verifique o ID)!");
+                        throw new Exception("Nenhum registro foi atualizado (verifique o marcaID)");
                 }
             }
             catch (Exception ex)
@@ -55,40 +75,18 @@ namespace MaquinasPesadas.DAO
                 throw new Exception(ex.Message);
             }
         }
-
-        public void Deletar(int id)
-        {
-            try
-            {
-                string sql = "DELETE FROM marca WHERE marcaID = @marcaID";
-
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                {
-                    cmd.Parameters.AddWithValue("@marcaID", id);
-                    var linhas = cmd.ExecuteNonQuery();
-
-                    if (linhas == 0)
-                        throw new Exception("Nenhuma marca encontrada com esse ID!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public List<Marca> GetAll()
+
         {
-            List<Marca> lista = new List<Marca>();
+            List<Marca> marcas = new List<Marca>();
 
             try
             {
-                string sql = "SELECT * FROM marca ORDER BY nome";
+                string sql = @"SELECT * FROM marca ORDER BY nome";
 
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using(var conexao = Conexao.Conectar())
+                    using(var comando = new MySqlCommand(sql, conexao))
+                        using(MySqlDataReader dr = comando.ExecuteReader())
                 {
                     while (dr.Read())
                     {
@@ -98,10 +96,10 @@ namespace MaquinasPesadas.DAO
                             Nome = dr["nome"].ToString(),
                             PaisOrigem = dr["paisOrigem"].ToString()
                         };
-                        lista.Add(m);
+                        marcas.Add(m);
                     }
                 }
-                return lista;
+                return marcas;
             }
             catch (Exception ex)
             {
@@ -109,25 +107,27 @@ namespace MaquinasPesadas.DAO
             }
         }
 
-        public Marca BuscarID(int id)
+        public Marca BuscarID(int marcaID)
         {
             try
             {
-                string sql = "SELECT * FROM marca WHERE marcaID = @marcaID";
+                string sql = @"SELECT * FROM marca WHERE marcaID = @marcaID";
 
                 using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
+                    using(var cmd =  new MySqlCommand(sql, conexao))
                 {
-                    cmd.Parameters.AddWithValue("@marcaID", id);
+                    cmd.Parameters.AddWithValue("@marcaID", marcaID);
 
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    using(MySqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
                             Marca m = new Marca();
+
                             m.MarcaID = Convert.ToInt32(dr["marcaID"]);
                             m.Nome = dr["nome"].ToString();
                             m.PaisOrigem = dr["paisOrigem"].ToString();
+
                             return m;
                         }
                         else
@@ -137,7 +137,7 @@ namespace MaquinasPesadas.DAO
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }

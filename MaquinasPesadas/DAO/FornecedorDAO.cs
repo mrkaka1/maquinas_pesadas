@@ -35,12 +35,31 @@ namespace MaquinasPesadas.DAO
             }
         }
 
+        public void Deletar(int fornecedorID)
+        {
+            try
+            {
+                string sql = "DELETE FROM fornecedor WHERE fornecedorID = @fornecedorID;";
+                using (var conexao = Conexao.Conectar())
+                using (var cmd = new MySqlCommand(sql, conexao))
+                {
+                    cmd.Parameters.AddWithValue("@fornecedorID", fornecedorID);
+                    var linhasAfetadas = cmd.ExecuteNonQuery();
+                    if (linhasAfetadas == 0)
+                        throw new Exception("Nenhum registro encontrado com esse ID!");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public void Atualizar(Fornecedor f)
         {
             try
             {
-                string sql = @"UPDATE fornecedor SET razaoSocial = @razaoSocial, cnpj = @cnpj, telefone = @telefone,
-                    email = @email, cidade = @cidade, uf = @uf
+                string sql = @"UPDATE fornecedor SET razaoSocial = @razaoSocial, cnpj = @cnpj, telefone = @telefone, email = @email, cidade = @cidade, uf = @uf
                     WHERE fornecedorID = @fornecedorID";
 
                 using (var conexao = Conexao.Conectar())
@@ -56,7 +75,7 @@ namespace MaquinasPesadas.DAO
                     var linhas = cmd.ExecuteNonQuery();
 
                     if (linhas == 0)
-                        throw new Exception("Nenhum fornecedor foi atualizado (verifique o ID)!");
+                        throw new Exception("Nenhum registro foi atualizado (verifique o fornecedorID)");
                 }
             }
             catch (Exception ex)
@@ -64,47 +83,35 @@ namespace MaquinasPesadas.DAO
                 throw new Exception(ex.Message);
             }
         }
-
-        public void Deletar(int id)
-        {
-            try
-            {
-                string sql = "DELETE FROM fornecedor WHERE fornecedorID = @fornecedorID";
-
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                {
-                    cmd.Parameters.AddWithValue("@fornecedorID", id);
-                    var linhas = cmd.ExecuteNonQuery();
-
-                    if (linhas == 0)
-                        throw new Exception("Nenhum fornecedor encontrado com esse ID!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public List<Fornecedor> GetAll()
+
         {
-            List<Fornecedor> lista = new List<Fornecedor>();
+            List<Fornecedor> fornecedores = new List<Fornecedor>();
 
             try
             {
-                string sql = "SELECT * FROM fornecedor ORDER BY razaoSocial";
+                string sql = @"SELECT * FROM fornecedor ORDER BY razaoSocial";
 
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using(var conexao = Conexao.Conectar())
+                    using(var comando = new MySqlCommand(sql, conexao))
+                        using(MySqlDataReader dr = comando.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        lista.Add(LerFornecedor(dr));
+                        Fornecedor f = new Fornecedor()
+                        {
+                            FornecedorID = Convert.ToInt32(dr["fornecedorID"]),
+                            Razao = dr["razaoSocial"].ToString(),
+                            CNPJ = dr["cnpj"].ToString(),
+                            Telefone = dr["telefone"].ToString(),
+                            Email = dr["email"].ToString(),
+                            Cidade = dr["cidade"].ToString(),
+                            UF = dr["uf"].ToString()
+                        };
+                        fornecedores.Add(f);
                     }
                 }
-                return lista;
+                return fornecedores;
             }
             catch (Exception ex)
             {
@@ -112,43 +119,44 @@ namespace MaquinasPesadas.DAO
             }
         }
 
-        public Fornecedor BuscarID(int id)
+        public Fornecedor BuscarID(int fornecedorID)
         {
             try
             {
-                string sql = "SELECT * FROM fornecedor WHERE fornecedorID = @fornecedorID";
+                string sql = @"SELECT * FROM fornecedor WHERE fornecedorID = @fornecedorID";
 
                 using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
+                    using(var cmd =  new MySqlCommand(sql, conexao))
                 {
-                    cmd.Parameters.AddWithValue("@fornecedorID", id);
+                    cmd.Parameters.AddWithValue("@fornecedorID", fornecedorID);
 
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    using(MySqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
-                            return LerFornecedor(dr);
+                        {
+                            Fornecedor f = new Fornecedor();
+
+                            f.FornecedorID = Convert.ToInt32(dr["fornecedorID"]);
+                            f.Razao = dr["razaoSocial"].ToString();
+                            f.CNPJ = dr["cnpj"].ToString();
+                            f.Telefone = dr["telefone"].ToString();
+                            f.Email = dr["email"].ToString();
+                            f.Cidade = dr["cidade"].ToString();
+                            f.UF = dr["uf"].ToString();
+
+                            return f;
+                        }
                         else
+                        {
                             throw new Exception("Nenhum fornecedor encontrado com esse ID.");
+                        }
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        private Fornecedor LerFornecedor(MySqlDataReader dr)
-        {
-            Fornecedor f = new Fornecedor();
-            f.FornecedorID = Convert.ToInt32(dr["fornecedorID"]);
-            f.Razao = dr["razaoSocial"].ToString();
-            f.CNPJ = dr["cnpj"].ToString();
-            f.Telefone = dr["telefone"].ToString();
-            f.Email = dr["email"].ToString();
-            f.Cidade = dr["cidade"].ToString();
-            f.UF = dr["uf"].ToString();
-            return f;
         }
     }
 }

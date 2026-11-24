@@ -31,9 +31,25 @@ namespace MaquinasPesadas.DAO
                     cmd.ExecuteNonQuery();
                 }
             }
-            catch (MySqlException ex) when (ex.Number == 1062)
+            catch (Exception ex)
             {
-                throw new Exception("Já existe um cliente cadastrado com esse CPF/CNPJ!");
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public void Deletar(int clienteID)
+        {
+            try
+            {
+                string sql = "DELETE FROM cliente WHERE clienteID = @clienteID;";
+                using (var conexao = Conexao.Conectar())
+                using (var cmd = new MySqlCommand(sql, conexao))
+                {
+                    cmd.Parameters.AddWithValue("@clienteID", clienteID);
+                    var linhasAfetadas = cmd.ExecuteNonQuery();
+                    if (linhasAfetadas == 0)
+                        throw new Exception("Nenhum registro encontrado com esse ID!");
+                }
             }
             catch (Exception ex)
             {
@@ -45,8 +61,7 @@ namespace MaquinasPesadas.DAO
         {
             try
             {
-                string sql = @"UPDATE cliente SET nome = @nome, cpfCnpj = @cpfCnpj, tipoPessoa = @tipoPessoa,
-                    telefone = @telefone, email = @email, cidade = @cidade, uf = @uf, dataCadastro = @dataCadastro
+                string sql = @"UPDATE cliente SET nome = @nome, cpfCnpj = @cpfCnpj, tipoPessoa = @tipoPessoa, telefone = @telefone, email = @email, cidade = @cidade, uf = @uf, dataCadastro = @dataCadastro
                     WHERE clienteID = @clienteID";
 
                 using (var conexao = Conexao.Conectar())
@@ -64,7 +79,7 @@ namespace MaquinasPesadas.DAO
                     var linhas = cmd.ExecuteNonQuery();
 
                     if (linhas == 0)
-                        throw new Exception("Nenhum cliente foi atualizado (verifique o ID)!");
+                        throw new Exception("Nenhum registro foi atualizado (verifique o clienteID)");
                 }
             }
             catch (Exception ex)
@@ -72,47 +87,37 @@ namespace MaquinasPesadas.DAO
                 throw new Exception(ex.Message);
             }
         }
-
-        public void Deletar(int id)
-        {
-            try
-            {
-                string sql = "DELETE FROM cliente WHERE clienteID = @clienteID";
-
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                {
-                    cmd.Parameters.AddWithValue("@clienteID", id);
-                    var linhas = cmd.ExecuteNonQuery();
-
-                    if (linhas == 0)
-                        throw new Exception("Nenhum cliente encontrado com esse ID!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public List<Cliente> GetAll()
+
         {
-            List<Cliente> lista = new List<Cliente>();
+            List<Cliente> clientes = new List<Cliente>();
 
             try
             {
-                string sql = "SELECT * FROM cliente ORDER BY nome";
+                string sql = @"SELECT * FROM cliente ORDER BY nome";
 
-                using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
-                using (MySqlDataReader dr = cmd.ExecuteReader())
+                using(var conexao = Conexao.Conectar())
+                    using(var comando = new MySqlCommand(sql, conexao))
+                        using(MySqlDataReader dr = comando.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        lista.Add(LerCliente(dr));
+                        Cliente c = new Cliente()
+                        {
+                            ClienteID = Convert.ToInt32(dr["clienteID"]),
+                            Nome = dr["nome"].ToString(),
+                            CpfCnpj = dr["cpfCnpj"].ToString(),
+                            TipoPessoa = dr["tipoPessoa"].ToString(),
+                            Telefone = dr["telefone"].ToString(),
+                            Email = dr["email"].ToString(),
+                            Cidade = dr["cidade"].ToString(),
+                            UF = dr["uf"].ToString(),
+                            DataCadastro = DateOnly.FromDateTime(Convert.ToDateTime(dr["dataCadastro"]))
+                        };
+                        clientes.Add(c);
                     }
                 }
-                return lista;
+                return clientes;
             }
             catch (Exception ex)
             {
@@ -120,45 +125,46 @@ namespace MaquinasPesadas.DAO
             }
         }
 
-        public Cliente BuscarID(int id)
+        public Cliente BuscarID(int clienteID)
         {
             try
             {
-                string sql = "SELECT * FROM cliente WHERE clienteID = @clienteID";
+                string sql = @"SELECT * FROM cliente WHERE clienteID = @clienteID";
 
                 using (var conexao = Conexao.Conectar())
-                using (var cmd = new MySqlCommand(sql, conexao))
+                    using(var cmd =  new MySqlCommand(sql, conexao))
                 {
-                    cmd.Parameters.AddWithValue("@clienteID", id);
+                    cmd.Parameters.AddWithValue("@clienteID", clienteID);
 
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    using(MySqlDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
-                            return LerCliente(dr);
+                        {
+                            Cliente c = new Cliente();
+
+                            c.ClienteID = Convert.ToInt32(dr["clienteID"]);
+                            c.Nome = dr["nome"].ToString();
+                            c.CpfCnpj = dr["cpfCnpj"].ToString();
+                            c.TipoPessoa = dr["tipoPessoa"].ToString();
+                            c.Telefone = dr["telefone"].ToString();
+                            c.Email = dr["email"].ToString();
+                            c.Cidade = dr["cidade"].ToString();
+                            c.UF = dr["uf"].ToString();
+                            c.DataCadastro = DateOnly.FromDateTime(Convert.ToDateTime(dr["dataCadastro"]));
+
+                            return c;
+                        }
                         else
+                        {
                             throw new Exception("Nenhum cliente encontrado com esse ID.");
+                        }
                     }
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        private Cliente LerCliente(MySqlDataReader dr)
-        {
-            Cliente c = new Cliente();
-            c.ClienteID = Convert.ToInt32(dr["clienteID"]);
-            c.Nome = dr["nome"].ToString();
-            c.CpfCnpj = dr["cpfCnpj"].ToString();
-            c.TipoPessoa = dr["tipoPessoa"].ToString();
-            c.Telefone = dr["telefone"].ToString();
-            c.Email = dr["email"].ToString();
-            c.Cidade = dr["cidade"].ToString();
-            c.UF = dr["uf"].ToString();
-            c.DataCadastro = DateOnly.FromDateTime(Convert.ToDateTime(dr["dataCadastro"]));
-            return c;
         }
     }
 }
