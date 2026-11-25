@@ -67,6 +67,11 @@ namespace MaquinasPesadas.Forms
             new FormVenda().ShowDialog();
         }
 
+        private void btn_ordens_Click(object sender, EventArgs e)
+        {
+            new FormOrdemServico().ShowDialog();
+        }
+
         private void btn_sair_Click(object sender, EventArgs e)
         {
             Application.Exit();

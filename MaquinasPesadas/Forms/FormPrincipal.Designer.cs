@@ -28,6 +28,7 @@ namespace MaquinasPesadas.Forms
             btn_maquinas = new Button();
             btn_compatibilidades = new Button();
             btn_vendas = new Button();
+            btn_ordens = new Button();
             btn_sair = new Button();
             SuspendLayout();
             label1.AutoSize = true;
@@ -107,10 +108,17 @@ namespace MaquinasPesadas.Forms
             btn_vendas.Text = "Vendas";
             btn_vendas.UseVisualStyleBackColor = true;
             btn_vendas.Click += btn_vendas_Click;
+            btn_ordens.Location = new Point(30, 320);
+            btn_ordens.Name = "btn_ordens";
+            btn_ordens.Size = new Size(180, 40);
+            btn_ordens.TabIndex = 11;
+            btn_ordens.Text = "Ordens de Serviço";
+            btn_ordens.UseVisualStyleBackColor = true;
+            btn_ordens.Click += btn_ordens_Click;
             btn_sair.Location = new Point(230, 320);
             btn_sair.Name = "btn_sair";
             btn_sair.Size = new Size(180, 40);
-            btn_sair.TabIndex = 11;
+            btn_sair.TabIndex = 12;
             btn_sair.Text = "Sair";
             btn_sair.UseVisualStyleBackColor = true;
             btn_sair.Click += btn_sair_Click;
@@ -118,6 +126,7 @@ namespace MaquinasPesadas.Forms
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(440, 380);
             Controls.Add(btn_sair);
+            Controls.Add(btn_ordens);
             Controls.Add(btn_vendas);
             Controls.Add(btn_compatibilidades);
             Controls.Add(btn_maquinas);
@@ -151,6 +160,7 @@ namespace MaquinasPesadas.Forms
         private Button btn_maquinas;
         private Button btn_compatibilidades;
         private Button btn_vendas;
+        private Button btn_ordens;
         private Button btn_sair;
     }
 }
