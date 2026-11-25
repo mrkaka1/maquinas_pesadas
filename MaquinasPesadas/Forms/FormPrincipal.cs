@@ -62,6 +62,11 @@ namespace MaquinasPesadas.Forms
             new FormPecaModelo().ShowDialog();
         }
 
+        private void btn_vendas_Click(object sender, EventArgs e)
+        {
+            new FormVenda().ShowDialog();
+        }
+
         private void btn_sair_Click(object sender, EventArgs e)
         {
             Application.Exit();

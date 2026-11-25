@@ -17,7 +17,7 @@ namespace MaquinasPesadas
 
                 //new MaquinasPesadas.Forms.FormMaquina().ShowDialog();
 
-                new MaquinasPesadas.Forms.FormPecaModelo().ShowDialog();
+                new MaquinasPesadas.Forms.FormVenda().ShowDialog();
             }
             catch (Exception ex)
             {
